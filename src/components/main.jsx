@@ -58,7 +58,7 @@ const Main = () => {
               />
               <button
                 type='submit'
-                className='py-1 px-3 text-lg bg-indigo-400 rounded-tr rounded-br focus:outline-none focus:bg-indigo-500 hover:text-white'
+                className='py-1 px-3 text-lg bg-gray-400 rounded-tr rounded-br focus:outline-none focus:bg-gray-600 hover:text-white'
               >
                 Search
               </button>
