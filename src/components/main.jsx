@@ -1,39 +1,50 @@
 import { Carousel } from 'antd';
-import pics from '../doctorstrange.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Spin } from 'antd';
 
 const Main = () => {
+  const [headerData, setHeaderData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function dataFetch() {
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}`
+      );
+      setHeaderData(data.results.slice(0, 10));
+      setIsLoading(false);
+    }
+    dataFetch();
+  }, []);
+
   return (
-    <div className=''>
+    <div className='top-0'>
       <div className='container mx-auto relative overflow-hidden'>
-        <Carousel
-          dotPosition='left'
-          autoplay
-          easing='linear'
-          className='w-full opacity-75'
-        >
-          <div>
-            <h3 className='h-50vh text-center'>
-              <img src={pics} alt='img' className='w-full' />
-            </h3>
-          </div>
-          <div>
-            <h3 className='h-50vh text-center'>
-              <img src={pics} alt='img' className='w-full' />
-            </h3>
-          </div>
-          <div>
-            <h3 className='h-50vh text-center'>
-              <img src={pics} alt='img' className='w-full' />
-            </h3>
-          </div>
-          <div>
-            <h3 className='h-50vh text-center'>
-              <img src={pics} alt='img' className='w-full' />
-            </h3>
-          </div>
-        </Carousel>
+        {!isLoading ? (
+          <Carousel
+            dotPosition='left'
+            autoplay
+            easing='linear'
+            className='w-full opacity-75'
+          >
+            {headerData.map((movie) => (
+              <div key={movie.id}>
+                <h3 className='h-50vh text-center'>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                    alt='img'
+                    className='w-full'
+                  />
+                </h3>
+              </div>
+            ))}
+          </Carousel>
+        ) : (
+          <Spin className='font-4xl' />
+        )}
 
         <div className='absolute top-0 left-0 w-full mt-64'>
           <div className='py-10 max-w-3xl mx-auto rounded glass'>
