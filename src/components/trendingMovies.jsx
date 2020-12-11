@@ -6,6 +6,7 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const TrendingMovies = () => {
   const [trendMovieData, setTrendMovieData] = useState([]);
   const [trendPage, setTrendPage] = useState(1);
+  const [trendTotalPage, setTrendTotalPage] = useState(0);
 
   useEffect(() => {
     async function dataFetch() {
@@ -13,7 +14,8 @@ const TrendingMovies = () => {
         `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.REACT_APP_API_KEY}&page=${trendPage}`
       );
       setTrendMovieData(data.results);
-      console.log(data.results);
+      setTrendTotalPage(data.total_pages);
+      console.log(data);
     }
     dataFetch();
   }, [trendPage]);
@@ -26,7 +28,7 @@ const TrendingMovies = () => {
           {trendMovieData.map((movie) => (
             <div
               key={movie.id}
-              className='w-60 test-glass rounded overflow-hidden shadow-lg'
+              className='w-60 test-glass rounded overflow-hidden shadow-lg transform hover:-translate-y-3 cursor-pointer transition-all duration-500 ease-out'
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -34,7 +36,7 @@ const TrendingMovies = () => {
                 className='w-full h-64'
               />
               <div className='mx-1 py-1'>
-                <h1 className='font-semibold text-lg truncate'>
+                <h1 className='font-semibold truncate'>
                   {movie.original_title || movie.title || movie.name}
                 </h1>
                 <p>{movie.release_date || movie.first_air_date}</p>
@@ -56,6 +58,10 @@ const TrendingMovies = () => {
                 Prev
               </button>
             )}
+
+            <p className='text-lg h-full my-auto'>
+              Page {trendPage} of {trendTotalPage}
+            </p>
 
             <button
               onClick={(e) => setTrendPage(trendPage + 1)}
