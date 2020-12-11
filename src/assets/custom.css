@@ -20,6 +20,14 @@
   min-width: 15rem !important;
 }
 
+.vw100 {
+  width: 100vw;
+}
+
+.vh100 {
+  width: 100vh;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
