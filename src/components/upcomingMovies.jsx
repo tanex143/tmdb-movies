@@ -15,20 +15,20 @@ const UpcomingMovies = () => {
       );
       setUpcomingMovieData(data.results);
       setUpcomingTotalPage(data.total_pages);
-      console.log(data);
+      console.log('Upcoming', data);
     }
     dataFetch();
   }, [upcomingPage]);
 
   return (
-    <div className='py-14'>
+    <div className='pb-14'>
       <div className='container mx-auto'>
         <h1 className='text-3xl italic font-semibold pb-8'>Upcoming Movies</h1>
         <div className='grid grid-cols-4 xl:grid-cols-5 gap-5'>
           {upcomingMovieData.map((movie) => (
             <div
               key={movie.id}
-              className='w-60 test-glass rounded overflow-hidden shadow-lg transform hover:-translate-y-3 cursor-pointer transition-all duration-500 ease-out'
+              className='w-60 test-glass rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl cursor-pointer transition-all duration-500 ease-out'
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${
