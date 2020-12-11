@@ -4,13 +4,10 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Spin } from 'antd';
-import { useLocation } from 'react-router-dom';
 
 const Main = () => {
   const [headerData, setHeaderData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
-  console.log(location.pathname);
 
   useEffect(() => {
     async function dataFetch() {
