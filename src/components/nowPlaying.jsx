@@ -33,13 +33,15 @@ const NowPlaying = () => {
               className='w-force bg-white overflow-hidden rounded shadow-lg transform hover:-translate-y-3 hover:shadow-2xl cursor-pointer transition-all duration-500 ease-out'
             >
               <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                src={`https://image.tmdb.org/t/p/w500${
+                  movie.poster_path || movie.backdrop_path
+                }`}
                 alt='img'
                 className='w-full h-64'
               />
               <div className='mx-1 py-1'>
                 <h1 className='font-semibold truncate'>
-                  {movie.original_title || movie.title || movie.name}
+                  {movie.title || movie.original_title || movie.name}
                 </h1>
                 <p>{movie.release_date || movie.first_air_date}</p>
               </div>
@@ -65,16 +67,18 @@ const NowPlaying = () => {
               Page {popularPage} of {popularTotalPage}
             </p>
 
-            <button
-              onClick={(e) => setPopularPage(popularPage + 1)}
-              className='text-lg border rounded py-1 px-4 focus:outline-none hover:bg-gray-400'
-            >
-              Next
-              <FontAwesomeIcon
-                icon={faArrowRight}
-                className='pr-2 text-2xl align-middle'
-              />
-            </button>
+            {popularPage !== popularTotalPage && (
+              <button
+                onClick={(e) => setPopularPage(popularPage + 1)}
+                className='text-lg border rounded py-1 px-4 focus:outline-none hover:bg-gray-400'
+              >
+                Next
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  className='pr-2 text-2xl align-middle'
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>

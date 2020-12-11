@@ -65,16 +65,18 @@ const UpcomingMovies = () => {
               Page {upcomingPage} of {upcomingTotalPage}
             </p>
 
-            <button
-              onClick={(e) => setUpcomingPage(upcomingPage + 1)}
-              className='text-lg border rounded py-1 px-4 focus:outline-none hover:bg-gray-400'
-            >
-              Next
-              <FontAwesomeIcon
-                icon={faArrowRight}
-                className='pr-2 text-2xl align-middle'
-              />
-            </button>
+            {upcomingPage !== upcomingTotalPage && (
+              <button
+                onClick={(e) => setUpcomingPage(upcomingPage + 1)}
+                className='text-lg border rounded py-1 px-4 focus:outline-none hover:bg-gray-400'
+              >
+                Next
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  className='pr-2 text-2xl align-middle'
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>
