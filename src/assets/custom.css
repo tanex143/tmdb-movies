@@ -15,8 +15,21 @@
   background-clip: padding-box;
   background-color: rgba(255, 255, 255, 0.2);
 }
-.test-glass {
-  backdrop-filter: blur(40px);
-  background-clip: padding-box;
-  background-color: rgba(255, 255, 255, 0.2);
+
+.w-force {
+  min-width: 15rem !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
 }

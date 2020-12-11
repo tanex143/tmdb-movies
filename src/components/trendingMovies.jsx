@@ -21,14 +21,14 @@ const TrendingMovies = () => {
   }, [trendPage]);
 
   return (
-    <div className='py-14'>
+    <div className='pb-14'>
       <div className='container mx-auto'>
         <h1 className='text-3xl italic font-semibold pb-8'>Trending Movies</h1>
         <div className='grid grid-cols-4 xl:grid-cols-5 gap-5'>
           {trendMovieData.map((movie) => (
             <div
               key={movie.id}
-              className='w-60 test-glass rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl cursor-pointer transition-all duration-500 ease-out'
+              className='w-60 bg-white rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl cursor-pointer transition-all duration-500 ease-out'
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

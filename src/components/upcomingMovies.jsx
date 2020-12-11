@@ -28,7 +28,7 @@ const UpcomingMovies = () => {
           {upcomingMovieData.map((movie) => (
             <div
               key={movie.id}
-              className='w-60 test-glass rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl cursor-pointer transition-all duration-500 ease-out'
+              className='w-60 bg-white rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl cursor-pointer transition-all duration-500 ease-out'
             >
               <img
                 src={`https://image.tmdb.org/t/p/w500${
