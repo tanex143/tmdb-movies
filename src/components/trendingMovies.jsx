@@ -13,6 +13,7 @@ const TrendingMovies = () => {
   const [trendTotalPage, setTrendTotalPage] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [onClickMovieID, setOnClickMovieID] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const pathID = location.pathname;
   const history = useHistory();
@@ -37,6 +38,7 @@ const TrendingMovies = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
+    setIsLoading(!isLoading);
     history.push('/');
   };
 
@@ -83,16 +85,22 @@ const TrendingMovies = () => {
       </div>
       {/* showing modal */}
       <Modal
-        title='Basic Modal'
         visible={isModalVisible}
         onOk={handleOk}
+        closable={false}
         onCancel={handleCancel}
         maskClosable={false}
         keyboard={false}
         width='75%'
         style={{ top: 40, height: '100vh', overflowY: 'auto' }}
       >
-        <MovieDetails onClickMovieID={onClickMovieID} />
+        {onClickMovieID && (
+          <MovieDetails
+            onClickMovieID={onClickMovieID}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
+        )}
       </Modal>
     </>
   );

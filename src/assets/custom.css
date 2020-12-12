@@ -28,6 +28,10 @@
   width: 100vh;
 }
 
+.modal-w-full {
+  width: 100% !important;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
