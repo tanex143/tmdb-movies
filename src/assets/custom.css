@@ -11,13 +11,23 @@
 }
 
 .glass {
-  backdrop-filter: blur(7px);
-  background-clip: padding-box;
-  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(7px) !important;
+  background-clip: padding-box !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.ant-modal-content .ant-modal-body {
+  backdrop-filter: blur(7px) !important;
+  background-clip: padding-box !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 .w-force {
   min-width: 15rem !important;
+}
+
+.minw-12 {
+  min-width: 12rem !important;
 }
 
 .vw100 {

@@ -4,10 +4,19 @@ import ReactPlayer from 'react-player';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import ShowMoreText from 'react-show-more-text';
+import PrevButton from './common/prevButton';
+import NextButton from './common/nextButton';
+import MovieCardScrollX from './common/movieCardScrollX';
 
 const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
   const [movieInfo, setMovieInfo] = useState();
   const [movieVideo, setMovieVideo] = useState([]);
+  const [movieCast, setMovieCast] = useState([]);
+  const [movieReviews, setMovieReviews] = useState([]);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const [reviewsTotalPage, setReviewsTotalPage] = useState(1);
+  const [similarMovies, setSimilarMovies] = useState([]);
 
   const youtubeURL = `https://www.youtube.com/watch?v=`;
 
@@ -19,10 +28,26 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
       const { data: video } = await axios.get(
         `https://api.themoviedb.org/3/movie/${onClickMovieID}/videos?api_key=${process.env.REACT_APP_API_KEY}`
       );
+      const { data: cast } = await axios.get(
+        `https://api.themoviedb.org/3/movie/${onClickMovieID}/credits?api_key=${process.env.REACT_APP_API_KEY}`
+      );
+      const { data: reviews } = await axios.get(
+        `https://api.themoviedb.org/3/movie/${onClickMovieID}/reviews?api_key=${process.env.REACT_APP_API_KEY}&page=${reviewsPage}`
+      );
+      const { data: similar } = await axios.get(
+        `https://api.themoviedb.org/3/movie/${onClickMovieID}/similar?api_key=${process.env.REACT_APP_API_KEY}`
+      );
       setMovieInfo(movieData);
       console.log('movie selected', movieData);
       setMovieVideo(video.results);
       console.log('this is video', video.results);
+      setMovieCast(cast.cast);
+      console.log('this is cast', cast);
+      setMovieReviews(reviews.results);
+      setReviewsTotalPage(reviews.total_pages);
+      console.log('this is reviews', reviews);
+      setSimilarMovies(similar.results);
+      console.log('this is similar movies', similar);
       setIsLoading(!isLoading);
     }
     dataFetch();
@@ -31,6 +56,21 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
   const starRating = () => {
     const stars = [];
     const rating = Math.floor(movieInfo.vote_average);
+
+    for (let i = 1; i <= 10; i++) {
+      if (i <= rating) {
+        stars.push(<FontAwesomeIcon icon={solidStar} key={i} alt='star' />);
+      } else {
+        stars.push(<FontAwesomeIcon icon={regularStar} key={i} alt='star' />);
+      }
+    }
+
+    return stars;
+  };
+
+  const reviewsRating = (rate) => {
+    const stars = [];
+    const rating = Math.floor(rate);
 
     for (let i = 1; i <= 10; i++) {
       if (i <= rating) {
@@ -91,9 +131,96 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                   <p className='italic py-1'>{movieInfo.overview}</p>
                 </div>
                 <div className='flex gap-5 pt-4'>
-                  <p>Movie Length: {movieInfo.runtime}mins</p>
-                  <p>Status: {movieInfo.status}</p>
+                  <p>
+                    Movie Length:{' '}
+                    <span className='italic'>{movieInfo.runtime}mins</span>
+                  </p>
+                  <p>
+                    Status: <span className='italic'>{movieInfo.status}</span>
+                  </p>
                   <a href={movieInfo.homepage}>{movieInfo.homepage}</a>
+                </div>
+              </div>
+            </div>
+            <div className='border rounded'>
+              <h1 className='font-semibold text-xl text-center pt-5'>Cast</h1>
+              <div className='flex overflow-x-auto py-3'>
+                {movieCast.map((eachCast) => (
+                  <div key={eachCast.id} className='overflow-hidden minw-12'>
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${eachCast.profile_path}`}
+                      alt='img'
+                      className='w-4/6 mx-auto h-32 rounded-full border'
+                    />
+                    <div className='text-center py-2'>
+                      <h1 className='font-semibold'>{eachCast.name}</h1>
+                      <p>{eachCast.character}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className='py-8'>
+              <h1 className='font-semibold text-xl text-center pt-5'>
+                Reviews and Comments
+              </h1>
+              <div>
+                {movieReviews.map((review) => (
+                  <div className='grid grid-cols-8 py-5 gap-5'>
+                    <div className='col-start-1'>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w500${review.author_details.avatar_path}`}
+                        alt='img'
+                        className='w-4/5 rounded-full mx-auto'
+                      />
+                    </div>
+                    <div className='col-start-2 col-span-7'>
+                      <h1 className='font-semibold text-lg'>{review.author}</h1>
+                      <p>
+                        Rating:
+                        <span className='ml-1'>
+                          {reviewsRating(review.author_details.rating)}
+                        </span>
+                      </p>
+                      <p className='italic'>Posted on: {review.created_at}</p>
+
+                      {/*/////////////////////// Show more text library ///////////////////////*/}
+                      <ShowMoreText
+                        more='Show more'
+                        less='Show less'
+                        className='py-3'
+                        expanded={false}
+                      >
+                        {review.content}
+                      </ShowMoreText>
+
+                      {console.log(movieReviews)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className='flex gap-5 justify-center'>
+                {reviewsPage !== 1 && (
+                  <PrevButton
+                    currentPage={reviewsPage}
+                    setCurrentPage={setReviewsPage}
+                  />
+                )}
+                <p className='h-full my-auto'>
+                  Page {reviewsPage} of {reviewsTotalPage}
+                </p>
+                {reviewsPage !== reviewsTotalPage && (
+                  <NextButton
+                    currentPage={reviewsPage}
+                    setCurrentPage={setReviewsPage}
+                  />
+                )}
+              </div>
+              <div className='pt-5'>
+                <div className='p-5 border rounded bg-white flex overflow-x-auto gap-5'>
+                  {similarMovies.map((movie) => (
+                    <MovieCardScrollX key={movie.id} movie={movie} />
+                  ))}
                 </div>
               </div>
             </div>

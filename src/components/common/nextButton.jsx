@@ -10,7 +10,7 @@ const NextButton = ({ currentPage, setCurrentPage }) => {
       Next
       <FontAwesomeIcon
         icon={faArrowRight}
-        className='pr-2 text-2xl align-middle'
+        className='pl-2 text-2xl align-middle'
       />
     </button>
   );

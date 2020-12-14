@@ -31,19 +31,17 @@ const TrendingMovies = () => {
     dataFetch();
   }, [currentPage]);
 
+  // / onClick to show modal /////////
   const showModal = (movieID) => {
     setIsModalVisible(true);
     setOnClickMovieID(movieID);
   };
 
-  const handleOk = () => {
+  // close modal after click the mask
+  const modalCloseHandler = () => {
     setIsModalVisible(false);
     setIsLoading(!isLoading);
     history.push('/');
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
   };
 
   return (
@@ -86,19 +84,20 @@ const TrendingMovies = () => {
       {/* showing modal */}
       <Modal
         visible={isModalVisible}
-        onOk={handleOk}
         closable={false}
-        onCancel={handleCancel}
-        maskClosable={false}
-        keyboard={false}
+        onCancel={modalCloseHandler}
+        maskClosable={true}
+        keyboard={true}
         width='75%'
-        style={{ top: 40, height: '100vh', overflowY: 'auto' }}
+        style={{ top: 40, overflowY: 'auto' }}
+        footer={false}
       >
         {onClickMovieID && (
           <MovieDetails
             onClickMovieID={onClickMovieID}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
+            className='overflow-hidden'
           />
         )}
       </Modal>
