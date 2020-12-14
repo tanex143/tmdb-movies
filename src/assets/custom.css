@@ -16,10 +16,22 @@
   background-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.ant-modal-content .ant-modal-body {
-  backdrop-filter: blur(7px) !important;
+.ant-modal-wrap {
+  backdrop-filter: blur(6px) !important;
   background-clip: padding-box !important;
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  z-index: 1000;
+  padding: 24px !important;
+  border-radius: 10px !important;
+}
+
+.ant-modal-body {
+  padding: 0;
+}
+
+.bg-force-remove {
+  background-color: none !important;
+  background: none !important;
 }
 
 .w-force {

@@ -34,7 +34,7 @@ const Main = () => {
               <div key={movie.id}>
                 <h3 className='h-50vh text-center'>
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                    src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                     alt='img'
                     className='w-full'
                   />

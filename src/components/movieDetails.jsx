@@ -8,6 +8,7 @@ import ShowMoreText from 'react-show-more-text';
 import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
 import MovieCardScrollX from './common/movieCardScrollX';
+import { Spin } from 'antd';
 
 const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
   const [movieInfo, setMovieInfo] = useState();
@@ -85,8 +86,8 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
 
   return (
     <>
-      {!isLoading && (
-        <div>
+      {!isLoading ? (
+        <div className='ant-modal-wrap ant-modal-body'>
           <div className='container mx-auto'>
             {movieVideo.length < 1 ? (
               <h1>Trailer is not available</h1>
@@ -209,7 +210,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                 <p className='h-full my-auto'>
                   Page {reviewsPage} of {reviewsTotalPage}
                 </p>
-                {reviewsPage !== reviewsTotalPage && (
+                {reviewsPage !== reviewsTotalPage && reviewsPage === 0 && (
                   <NextButton
                     currentPage={reviewsPage}
                     setCurrentPage={setReviewsPage}
@@ -217,6 +218,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                 )}
               </div>
               <div className='pt-5'>
+                <h1 className='py-1 font-semibold text-lg'>Similar Movies</h1>
                 <div className='p-5 border rounded bg-white flex overflow-x-auto gap-5'>
                   {similarMovies.map((movie) => (
                     <MovieCardScrollX key={movie.id} movie={movie} />
@@ -226,6 +228,8 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
             </div>
           </div>
         </div>
+      ) : (
+        <Spin className='container mx-auto bg-force-remove' size='large' />
       )}
     </>
   );

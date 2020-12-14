@@ -89,15 +89,16 @@ const TrendingMovies = () => {
         maskClosable={true}
         keyboard={true}
         width='75%'
-        style={{ top: 40, overflowY: 'auto' }}
+        style={{ top: 40, height: '90vh', overflowY: 'auto' }}
         footer={false}
+        className='ant-modal-wrap'
       >
         {onClickMovieID && (
           <MovieDetails
             onClickMovieID={onClickMovieID}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
-            className='overflow-hidden'
+            className='overflow-hidden bg-none'
           />
         )}
       </Modal>
