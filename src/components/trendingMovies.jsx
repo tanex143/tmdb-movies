@@ -32,7 +32,7 @@ const TrendingMovies = () => {
   }, [currentPage]);
 
   // / onClick to show modal /////////
-  const showModal = (movieID) => {
+  const showModalHandler = (movieID) => {
     setIsModalVisible(true);
     setOnClickMovieID(movieID);
   };
@@ -53,7 +53,7 @@ const TrendingMovies = () => {
           </h1>
           <div className='grid grid-cols-4 xl:grid-cols-5 gap-5'>
             {trendMovieData.map((movie) => (
-              <div key={movie.id} onClick={() => showModal(movie.id)}>
+              <div key={movie.id} onClick={() => showModalHandler(movie.id)}>
                 <MovieCard movie={movie} />
               </div>
             ))}

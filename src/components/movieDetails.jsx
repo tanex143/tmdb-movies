@@ -161,7 +161,11 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                 </div>
                 <div className='py-3'>
                   <p className='font-semibold'>Overview</p>
-                  <p className='italic py-1'>{movieInfo.overview}</p>
+                  {movieInfo.overview.length < 1 ? (
+                    <h1 className='italic py-1'>Ongoing.</h1>
+                  ) : (
+                    <p className='italic py-1'>{movieInfo.overview}</p>
+                  )}
                 </div>
                 <div className='flex gap-5 pt-4'>
                   <p>
