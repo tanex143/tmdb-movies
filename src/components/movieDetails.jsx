@@ -19,7 +19,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
   const [movieCast, setMovieCast] = useState([]);
   const [movieReviews, setMovieReviews] = useState([]);
   const [reviewsPage, setReviewsPage] = useState(1);
-  const [reviewsTotalPage, setReviewsTotalPage] = useState(1);
+  const [reviewsTotalPage, setReviewsTotalPage] = useState(0);
   const [similarMovies, setSimilarMovies] = useState([]);
 
   const youtubeURL = `https://www.youtube.com/watch?v=`;
@@ -167,15 +167,17 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                     <p className='italic py-1'>{movieInfo.overview}</p>
                   )}
                 </div>
-                <div className='flex gap-5 pt-4'>
+                <div className='flex gap-5 pt-4 flex-wrap'>
                   <p>
-                    Movie Length:{' '}
-                    <span className='italic'>{movieInfo.runtime}mins</span>
+                    Movie Length:
+                    <span className='ml-1 italic'>{movieInfo.runtime}mins</span>
                   </p>
                   <p>
                     Status: <span className='italic'>{movieInfo.status}</span>
                   </p>
-                  <a href={movieInfo.homepage}>{movieInfo.homepage}</a>
+                  <a href={movieInfo.homepage} className='truncate'>
+                    {movieInfo.homepage}
+                  </a>
                 </div>
               </div>
             </div>
@@ -183,7 +185,12 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
               <h1 className='font-semibold text-xl text-center pt-5'>Cast</h1>
               <div className='flex overflow-x-auto py-3'>
                 {movieCast.map((eachCast) => (
-                  <div key={eachCast.id} className='overflow-hidden minw-12'>
+                  <div
+                    key={eachCast.id}
+                    className={`overflow-hidden ${
+                      movieCast.length > 3 ? 'minw-12' : 'w-48'
+                    } `}
+                  >
                     {eachCast.profile_path ? (
                       <img
                         src={`https://image.tmdb.org/t/p/w500${eachCast.profile_path}`}
@@ -276,7 +283,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                     Page {reviewsPage} of {reviewsTotalPage}
                   </p>
                 )}
-                {reviewsPage !== reviewsTotalPage && reviewsPage === 0 && (
+                {reviewsPage !== reviewsTotalPage && reviewsPage < 1 && (
                   <NextButton
                     currentPage={reviewsPage}
                     setCurrentPage={setReviewsPage}
