@@ -35,9 +35,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
       const { data: cast } = await axios.get(
         `https://api.themoviedb.org/3/movie/${onClickMovieID}/credits?api_key=${process.env.REACT_APP_API_KEY}`
       );
-      const { data: reviews } = await axios.get(
-        `https://api.themoviedb.org/3/movie/${onClickMovieID}/reviews?api_key=${process.env.REACT_APP_API_KEY}&page=${reviewsPage}`
-      );
+
       const { data: similar } = await axios.get(
         `https://api.themoviedb.org/3/movie/${onClickMovieID}/similar?api_key=${process.env.REACT_APP_API_KEY}`
       );
@@ -47,15 +45,25 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
       console.log('this is video', video.results);
       setMovieCast(cast.cast);
       console.log('this is cast', cast);
-      setMovieReviews(reviews.results);
-      setReviewsTotalPage(reviews.total_pages);
-      console.log('this is reviews', reviews);
+
       setSimilarMovies(similar.results);
       console.log('this is similar movies', similar);
       setIsLoading(!isLoading);
     }
     dataFetch();
   }, [onClickMovieID]);
+
+  useEffect(() => {
+    async function reviewsFetch() {
+      const { data: reviews } = await axios.get(
+        `https://api.themoviedb.org/3/movie/${onClickMovieID}/reviews?api_key=${process.env.REACT_APP_API_KEY}&page=${reviewsPage}`
+      );
+      setMovieReviews(reviews.results);
+      setReviewsTotalPage(reviews.total_pages);
+      console.log('this is reviews', reviews);
+    }
+    reviewsFetch();
+  }, [reviewsPage, onClickMovieID]);
 
   const starRating = () => {
     const stars = [];
@@ -184,33 +192,39 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
             <div className='border rounded'>
               <h1 className='font-semibold text-xl text-center pt-5'>Cast</h1>
               <div className='flex overflow-x-auto py-3'>
-                {movieCast.map((eachCast) => (
-                  <div
-                    key={eachCast.id}
-                    className={`overflow-hidden ${
-                      movieCast.length > 3 ? 'minw-12' : 'w-48'
-                    } `}
-                  >
-                    {eachCast.profile_path ? (
-                      <img
-                        src={`https://image.tmdb.org/t/p/w500${eachCast.profile_path}`}
-                        alt='img'
-                        className='w-4/6 mx-auto h-32 rounded-full border'
-                      />
-                    ) : (
-                      <img
-                        src={UnknownPerson}
-                        alt='img'
-                        className='w-4/6 mx-auto h-32 rounded-full border'
-                      />
-                    )}
+                {movieCast.length < 1 ? (
+                  <h1 className='italic w-full text-center'>
+                    No cast added yet.
+                  </h1>
+                ) : (
+                  movieCast.map((eachCast) => (
+                    <div
+                      key={eachCast.id}
+                      className={`overflow-hidden ${
+                        movieCast.length > 3 ? 'minw-12' : 'w-48'
+                      } `}
+                    >
+                      {eachCast.profile_path ? (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500${eachCast.profile_path}`}
+                          alt='img'
+                          className='w-4/6 mx-auto h-32 rounded-full border'
+                        />
+                      ) : (
+                        <img
+                          src={UnknownPerson}
+                          alt='img'
+                          className='w-4/6 mx-auto h-32 rounded-full border'
+                        />
+                      )}
 
-                    <div className='text-center py-2'>
-                      <h1 className='font-semibold'>{eachCast.name}</h1>
-                      <p>{eachCast.character}</p>
+                      <div className='text-center py-2'>
+                        <h1 className='font-semibold'>{eachCast.name}</h1>
+                        <p>{eachCast.character}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
@@ -283,7 +297,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                     Page {reviewsPage} of {reviewsTotalPage}
                   </p>
                 )}
-                {reviewsPage !== reviewsTotalPage && reviewsPage < 1 && (
+                {reviewsPage !== reviewsTotalPage && reviewsTotalPage > 1 && (
                   <NextButton
                     currentPage={reviewsPage}
                     setCurrentPage={setReviewsPage}

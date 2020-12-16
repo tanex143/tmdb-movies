@@ -8,6 +8,8 @@ import { Modal } from 'antd';
 import MovieDetails from './movieDetails';
 import { useHistory } from 'react-router-dom';
 import MovieCard from './common/movieCard';
+import PrevButton from './common/prevButton';
+import NextButton from './common/nextButton';
 
 const Main = () => {
   const [headerData, setHeaderData] = useState([]);
@@ -34,6 +36,9 @@ const Main = () => {
       setHeaderLoading(false);
     }
     dataFetch();
+  }, []);
+
+  useEffect(() => {
     if (toFetchData) {
       async function searchDataFetch() {
         const { data: moviesFetched } = await axios.get(
@@ -44,11 +49,10 @@ const Main = () => {
         setTotalMoviesResults(moviesFetched.total_results);
         console.log(moviesFetched);
         setDataFetched(true);
-        setToFetchData(false);
       }
       searchDataFetch();
     }
-  }, [toFetchData, searchedText]);
+  }, [toFetchData, searchedText, searchedCurrentPage]);
 
   const SearchMoviesHandler = (e) => {
     e.preventDefault();
@@ -134,7 +138,7 @@ const Main = () => {
       </div>
 
       {dataFetched && (
-        <div className='py-14'>
+        <div className='pt-14'>
           <div className='container mx-auto'>
             <h1 className='text-lg font-semibold pb-5'>
               Total Results:
@@ -154,6 +158,27 @@ const Main = () => {
                 ))}
               </div>
             )}
+          </div>
+          <div className='pt-8'>
+            <div className='flex gap-5 justify-center'>
+              {searchedCurrentPage > 1 && (
+                <PrevButton
+                  currentPage={searchedCurrentPage}
+                  setCurrentPage={setSearchedCurrentPage}
+                />
+              )}
+
+              <p className='text-lg h-full my-auto'>
+                Page {searchedCurrentPage} of {searchedTotalPage}
+              </p>
+
+              {searchedCurrentPage !== searchedTotalPage && (
+                <NextButton
+                  currentPage={searchedCurrentPage}
+                  setCurrentPage={setSearchedCurrentPage}
+                />
+              )}
+            </div>
           </div>
         </div>
       )}
