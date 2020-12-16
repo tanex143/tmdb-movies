@@ -56,8 +56,13 @@ const Main = () => {
 
   const SearchMoviesHandler = (e) => {
     e.preventDefault();
-
+    setSearchedCurrentPage(1);
     setToFetchData(true);
+  };
+
+  const searchTextHandler = (e) => {
+    setSearchedText(e.target.value);
+    setSearchedCurrentPage(1);
   };
 
   // / onClick to show modal /////////
@@ -123,7 +128,7 @@ const Main = () => {
                   type='text'
                   placeholder='Search movies. . .'
                   className='w-4/5 py-1 text-lg focus:outline-none focus:shadow-lg rounded-tl rounded-bl indent'
-                  onChange={(e) => setSearchedText(e.target.value)}
+                  onChange={searchTextHandler}
                 />
                 <button
                   type='submit'

@@ -146,9 +146,13 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                 )}
               </div>
               <div className='col-span-7 col-start-4'>
-                <div className='flex gap-1 text-2xl font-semibold'>
-                  <h1>{movieInfo.title || movieInfo.original_title}</h1>
-                  <p>({movieInfo.release_date.split('-')[0]})</p>
+                <div className='flex gap-1 text-2xl font-semibold flex-wrap'>
+                  <h1>
+                    {movieInfo.title || movieInfo.original_title}{' '}
+                    <span className='ml-1'>
+                      ({movieInfo.release_date.split('-')[0]})
+                    </span>
+                  </h1>
                 </div>
                 <div className='flex gap-1 text-lg py-1'>
                   <h1>Genre:</h1>
