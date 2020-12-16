@@ -5,7 +5,7 @@ import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
 import { Modal } from 'antd';
 import MovieDetails from './movieDetails';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const NowPlaying = () => {
   const [popularMovieData, setPopularMovieData] = useState([]);
@@ -14,7 +14,6 @@ const NowPlaying = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [onClickMovieID, setOnClickMovieID] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
   const history = useHistory();
 
   useEffect(() => {

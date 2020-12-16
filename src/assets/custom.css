@@ -30,8 +30,7 @@
 }
 
 .bg-force-remove {
-  background-color: none !important;
-  background: none !important;
+  background: transparent !important;
 }
 
 .w-force {

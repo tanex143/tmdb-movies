@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
+import noImage from '../../images/no-image.jpg';
 
 const MovieCard = ({ movie }) => {
   return (
     <Link to={`movie/${movie.id}`}>
       <div className='w-60 bg-white rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl hover:text-black cursor-pointer transition-all duration-500 ease-out'>
-        <img
-          src={`https://image.tmdb.org/t/p/w500${
-            movie.poster_path || movie.backdrop_path
-          }`}
-          alt='img'
-          className='w-full h-64'
-        />
+        {movie.poster_path || movie.backdrop_path !== null ? (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${
+              movie.poster_path || movie.backdrop_path || movie.profile_path
+            }`}
+            alt='img'
+            className='w-full h-64'
+          />
+        ) : (
+          <img src={noImage} alt='img' className='w-full h-64' />
+        )}
         <div className='mx-1 py-1'>
           <h1 className='font-semibold truncate'>
             {movie.original_title || movie.title || movie.name}

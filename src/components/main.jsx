@@ -49,7 +49,7 @@ const Main = () => {
         <div className='absolute top-0 left-0 w-full mt-64'>
           <div className='py-10 max-w-3xl mx-auto rounded glass'>
             <div className='flex flex-col items-center'>
-              <h1 className='text-3xl font-semibold pt-3'>
+              <h1 className='text-3xl font-semibold'>
                 Welcome to The Movie Database
               </h1>
               <p className='pb-3 italic'>
