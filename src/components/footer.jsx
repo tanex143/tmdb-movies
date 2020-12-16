@@ -27,7 +27,7 @@ const Footer = () => {
             <p>Leaderboard</p>
           </div>
         </div>
-        <h1 className='text-center pt-5'>
+        <h1 className='text-center pt-5 font-semibold'>
           &copy; Alright Reserved TMDb December 2020.
         </h1>
       </div>

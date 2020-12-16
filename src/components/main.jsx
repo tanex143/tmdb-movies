@@ -167,17 +167,21 @@ const Main = () => {
                   setCurrentPage={setSearchedCurrentPage}
                 />
               )}
-
-              <p className='text-lg h-full my-auto'>
-                Page {searchedCurrentPage} of {searchedTotalPage}
-              </p>
-
-              {searchedCurrentPage !== searchedTotalPage && (
-                <NextButton
-                  currentPage={searchedCurrentPage}
-                  setCurrentPage={setSearchedCurrentPage}
-                />
+              {searchedTotalPage < 1 ? (
+                ''
+              ) : (
+                <p className='text-lg h-full my-auto'>
+                  Page {searchedCurrentPage} of {searchedTotalPage}
+                </p>
               )}
+
+              {searchedCurrentPage !== searchedTotalPage &&
+                searchedTotalPage > 1 && (
+                  <NextButton
+                    currentPage={searchedCurrentPage}
+                    setCurrentPage={setSearchedCurrentPage}
+                  />
+                )}
             </div>
           </div>
         </div>
