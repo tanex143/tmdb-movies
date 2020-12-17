@@ -1,12 +1,10 @@
-import { Carousel } from 'antd';
+import { Carousel, Spin, BackTop, Modal } from 'antd';
+import { useState, useEffect } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Spin, BackTop } from 'antd';
-import { Modal } from 'antd';
 import MovieDetails from './movieDetails';
-import { useHistory, useLocation, Link } from 'react-router-dom';
 import MovieCard from './common/movieCard';
 import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
@@ -31,9 +29,6 @@ const Main = () => {
   const [onClickMovieID, setOnClickMovieID] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
-  const location = useLocation();
-  const pathID = location.pathname;
-  console.log(pathID);
   const [statusCode, setStatusCode] = useState(false);
 
   // NOW PLAYING STATES
@@ -73,7 +68,6 @@ const Main = () => {
         setSearchedMovies(moviesFetched.results);
         setSearchedTotalPage(moviesFetched.total_pages);
         setTotalMoviesResults(moviesFetched.total_results);
-        console.log(moviesFetched);
         setDataFetched(true);
       }
       searchDataFetch();
@@ -88,7 +82,6 @@ const Main = () => {
       );
       setNowPlayingMovieData(data.results);
       setNowPlayingTotalPage(data.total_pages);
-      console.log('Now Playing', data);
     }
     dataFetch();
   }, [nowPlayingCurrentPage]);
@@ -101,7 +94,6 @@ const Main = () => {
       );
       setTrendMovieData(data.results);
       setTrendTotalPage(data.total_pages);
-      console.log('Trending', data);
     }
     dataFetch();
   }, [trendCurrentPage]);
@@ -114,7 +106,6 @@ const Main = () => {
       );
       setUpcomingMovieData(data.results);
       setUpcomingTotalPage(data.total_pages);
-      console.log('Upcoming', data);
     }
     dataFetch();
   }, [upcomingCurrentPage]);
@@ -170,7 +161,7 @@ const Main = () => {
               ))}
             </Carousel>
           ) : (
-            <Spin className='font-4xl' />
+            <Spin className='w-full mx-auto py-10' size='large' />
           )}
 
           <div className='absolute top-0 left-0 w-full mt-64'>

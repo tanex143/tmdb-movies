@@ -47,13 +47,9 @@ const MovieDetails = ({
           `https://api.themoviedb.org/3/movie/${onClickMovieID}/similar?api_key=${process.env.REACT_APP_API_KEY}`
         );
         setMovieInfo(movieData);
-        console.log('movie selected', movieData);
         setMovieVideo(video.results);
-        console.log('this is video', video.results);
         setMovieCast(cast.cast);
-        console.log('this is cast', cast);
         setSimilarMovies(similar.results);
-        console.log('this is similar movies', similar);
         setIsLoading(false);
       } catch (e) {
         setStatusCode(true);
@@ -71,7 +67,6 @@ const MovieDetails = ({
       );
       setMovieReviews(reviews.results);
       setReviewsTotalPage(reviews.total_pages);
-      console.log('this is reviews', reviews);
     }
     reviewsFetch();
   }, [reviewsPage, onClickMovieID]);
