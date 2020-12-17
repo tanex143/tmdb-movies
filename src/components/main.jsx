@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Spin, BackTop } from 'antd';
 import { Modal } from 'antd';
 import MovieDetails from './movieDetails';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import MovieCard from './common/movieCard';
 import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
@@ -269,7 +269,9 @@ const Main = () => {
           <div className='p-5 rounded bg-white flex overflow-x-auto gap-5'>
             {nowPlayingMovieData.map((movie) => (
               <div key={movie.id} onClick={() => showModalHandler(movie.id)}>
-                <MovieCardScrollX movie={movie} />
+                <Link to={`movie/${movie.id}`}>
+                  <MovieCardScrollX movie={movie} />
+                </Link>
               </div>
             ))}
           </div>
@@ -340,6 +342,7 @@ const Main = () => {
         {onClickMovieID && (
           <MovieDetails
             onClickMovieID={onClickMovieID}
+            setOnClickMovieID={setOnClickMovieID}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
             statusCode={statusCode}

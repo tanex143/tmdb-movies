@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ReactPlayer from 'react-player';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import ShowMoreText from 'react-show-more-text';
 import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
@@ -16,6 +14,7 @@ import { CountingStar } from './common/countingStar';
 
 const MovieDetails = ({
   onClickMovieID,
+  setOnClickMovieID,
   setIsLoading,
   isLoading,
   statusCode,
@@ -92,6 +91,12 @@ const MovieDetails = ({
         />
       );
     }
+  };
+
+  // RESET REVIEWS PAGE IF WE CLICK SIMILAR MOVIES.
+  const resetReviewsPage = (id) => {
+    setOnClickMovieID(id);
+    setReviewsPage(1);
   };
 
   return (
@@ -302,7 +307,14 @@ const MovieDetails = ({
                     </h1>
                   ) : (
                     similarMovies.map((movie) => (
-                      <MovieCardScrollX key={movie.id} movie={movie} />
+                      <div
+                        key={movie.id}
+                        onClick={() => resetReviewsPage(movie.id)}
+                      >
+                        <Link to={`/movie/${movie.id}`} style={{ top: 0 }}>
+                          <MovieCardScrollX movie={movie} />
+                        </Link>
+                      </div>
                     ))
                   )}
                 </div>
