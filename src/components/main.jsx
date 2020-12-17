@@ -1,19 +1,22 @@
 import { Carousel } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin } from 'antd';
+import { Spin, BackTop } from 'antd';
 import { Modal } from 'antd';
 import MovieDetails from './movieDetails';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import MovieCard from './common/movieCard';
 import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
+import MovieCardScrollX from './common/movieCardScrollX';
+import MoviesStyling from './common/moviesStyling';
+import Footer from './footer';
 
 const Main = () => {
+  // HEADER AND SEARCH STATES
   const [headerData, setHeaderData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [headerLoading, setHeaderLoading] = useState(true);
   const [dataFetched, setDataFetched] = useState(false);
   const [toFetchData, setToFetchData] = useState(false);
@@ -22,11 +25,33 @@ const Main = () => {
   const [searchedTotalPage, setSearchedTotalPage] = useState(0);
   const [searchedText, setSearchedText] = useState('');
   const [totalMoviesResults, setTotalMoviesResults] = useState(0);
+
+  //COMMON STATES
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [onClickMovieID, setOnClickMovieID] = useState(0);
-
+  const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
+  const location = useLocation();
+  const pathID = location.pathname;
+  console.log(pathID);
+  const [statusCode, setStatusCode] = useState(false);
 
+  // NOW PLAYING STATES
+  const [nowPlayingMovieData, setNowPlayingMovieData] = useState([]);
+  const [nowPlayingCurrentPage, setNowPlayingCurrentPage] = useState(1);
+  const [nowPlayingTotalPage, setNowPlayingTotalPage] = useState(0);
+
+  // TRENDING MOVIES STATES
+  const [trendMovieData, setTrendMovieData] = useState([]);
+  const [trendCurrentPage, setTrendCurrentPage] = useState(1);
+  const [trendTotalPage, setTrendTotalPage] = useState(0);
+
+  // UPCOMING MOVIES STATES
+  const [upcomingMovieData, setUpcomingMovieData] = useState([]);
+  const [upcomingCurrentPage, setUpcomingCurrentPage] = useState(1);
+  const [upcomingTotalPage, setUpcomingTotalPage] = useState(0);
+
+  // GETTING PICTURES TO PUT IN SLIDER ON TOP OF PAGE
   useEffect(() => {
     async function dataFetch() {
       const { data } = await axios.get(
@@ -38,6 +63,7 @@ const Main = () => {
     dataFetch();
   }, []);
 
+  // GETTING SEARCH QUERY
   useEffect(() => {
     if (toFetchData) {
       async function searchDataFetch() {
@@ -54,12 +80,53 @@ const Main = () => {
     }
   }, [toFetchData, searchedText, searchedCurrentPage]);
 
+  // GETTING NOW PLAYING DATA
+  useEffect(() => {
+    async function dataFetch() {
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&page=${nowPlayingCurrentPage}`
+      );
+      setNowPlayingMovieData(data.results);
+      setNowPlayingTotalPage(data.total_pages);
+      console.log('Now Playing', data);
+    }
+    dataFetch();
+  }, [nowPlayingCurrentPage]);
+
+  // GETTING TRENDING MOVIES DATA
+  useEffect(() => {
+    async function dataFetch() {
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env.REACT_APP_API_KEY}&page=${trendCurrentPage}`
+      );
+      setTrendMovieData(data.results);
+      setTrendTotalPage(data.total_pages);
+      console.log('Trending', data);
+    }
+    dataFetch();
+  }, [trendCurrentPage]);
+
+  // GETTING UPCOMING MOVIES DATA
+  useEffect(() => {
+    async function dataFetch() {
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.REACT_APP_API_KEY}&page=${upcomingCurrentPage}`
+      );
+      setUpcomingMovieData(data.results);
+      setUpcomingTotalPage(data.total_pages);
+      console.log('Upcoming', data);
+    }
+    dataFetch();
+  }, [upcomingCurrentPage]);
+
+  // TO PREVENT REFRESH OF THE PAGE WHILE SEARCHING.
   const SearchMoviesHandler = (e) => {
     e.preventDefault();
     setSearchedCurrentPage(1);
     setToFetchData(true);
   };
 
+  // reset page to 1 if we search again if we are not in page 1
   const searchTextHandler = (e) => {
     setSearchedText(e.target.value);
     setSearchedCurrentPage(1);
@@ -71,10 +138,11 @@ const Main = () => {
     setOnClickMovieID(movieID);
   };
 
-  // close modal after click the mask
+  // close modal after clicking the mask
   const modalCloseHandler = () => {
     setIsModalVisible(false);
-    setIsLoading(!isLoading);
+    setStatusCode(false);
+    setIsLoading(true);
     history.push('/');
   };
 
@@ -91,13 +159,13 @@ const Main = () => {
             >
               {headerData.map((movie) => (
                 <div key={movie.id}>
-                  <h3 className='h-50vh text-center'>
+                  <div className='h-50vh text-center'>
                     <img
                       src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                       alt='img'
-                      className='w-full'
+                      className='w-full h-full'
                     />
-                  </h3>
+                  </div>
                 </div>
               ))}
             </Carousel>
@@ -192,6 +260,71 @@ const Main = () => {
         </div>
       )}
 
+      {/* //////////////NOW PLAYING ELEMENTS///////////////////////////// */}
+      <div className='py-14'>
+        <div className='container mx-auto'>
+          <h1 className='text-3xl italic font-semibold pb-8'>
+            Now Playing in Cinema's
+          </h1>
+          <div className='p-5 rounded bg-white flex overflow-x-auto gap-5'>
+            {nowPlayingMovieData.map((movie) => (
+              <div key={movie.id} onClick={() => showModalHandler(movie.id)}>
+                <MovieCardScrollX movie={movie} />
+              </div>
+            ))}
+          </div>
+          <div className='pt-8'>
+            <div className='flex gap-5 justify-center'>
+              {nowPlayingCurrentPage > 1 && (
+                <PrevButton
+                  currentPage={nowPlayingCurrentPage}
+                  setCurrentPage={setNowPlayingCurrentPage}
+                />
+              )}
+
+              <p className='text-lg h-full my-auto'>
+                Page {nowPlayingCurrentPage} of {nowPlayingTotalPage}
+              </p>
+
+              {nowPlayingCurrentPage !== nowPlayingTotalPage && (
+                <NextButton
+                  currentPage={nowPlayingCurrentPage}
+                  setCurrentPage={setNowPlayingCurrentPage}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ///////////////////TRENDING MOVIES ELEMENTS //////////////////////////*/}
+      <MoviesStyling
+        movieData={trendMovieData}
+        showModalHandler={showModalHandler}
+        currentPage={trendCurrentPage}
+        setCurrentPage={setTrendCurrentPage}
+        totalPages={trendTotalPage}
+        name='Trending Movies'
+      />
+
+      {/* /////////////////////////UPCOMING MOVIES ELEMENTS/////////////////////////////// */}
+      <MoviesStyling
+        movieData={upcomingMovieData}
+        showModalHandler={showModalHandler}
+        currentPage={upcomingCurrentPage}
+        setCurrentPage={setUpcomingCurrentPage}
+        totalPages={upcomingTotalPage}
+        name='Upcoming Movies'
+      />
+
+      {/* /////////////////////FOOTER//////////////////////////// */}
+      <Footer />
+      <BackTop>
+        <button className='bg-gray-400 p-2 rounded cursor-pointer focus:outline-none hover:text-white hover:bg-black transition-all duration-500 ease-out'>
+          <FontAwesomeIcon icon={faArrowUp} />
+        </button>
+      </BackTop>
+
       {/* showing modal */}
       <Modal
         visible={isModalVisible}
@@ -209,6 +342,8 @@ const Main = () => {
             onClickMovieID={onClickMovieID}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
+            statusCode={statusCode}
+            setStatusCode={setStatusCode}
             className='overflow-hidden bg-none'
           />
         )}

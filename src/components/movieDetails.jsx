@@ -12,8 +12,15 @@ import { Spin } from 'antd';
 import UnknownPerson from '../images/unknown-person.png';
 import Incognito from '../images/incognito.jpg';
 import noImage from '../images/no-image.jpg';
+import { CountingStar } from './common/countingStar';
 
-const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
+const MovieDetails = ({
+  onClickMovieID,
+  setIsLoading,
+  isLoading,
+  statusCode,
+  setStatusCode,
+}) => {
   const [movieInfo, setMovieInfo] = useState();
   const [movieVideo, setMovieVideo] = useState([]);
   const [movieCast, setMovieCast] = useState([]);
@@ -24,35 +31,40 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
 
   const youtubeURL = `https://www.youtube.com/watch?v=`;
 
+  // GETTING ALL THE DATA OF THAT MOVIE INCLUDING VIDEO, CAST AND SIMILAR MOVIES
   useEffect(() => {
     async function dataFetch() {
-      const { data: movieData } = await axios.get(
-        `https://api.themoviedb.org/3/movie/${onClickMovieID}?api_key=${process.env.REACT_APP_API_KEY}`
-      );
-      const { data: video } = await axios.get(
-        `https://api.themoviedb.org/3/movie/${onClickMovieID}/videos?api_key=${process.env.REACT_APP_API_KEY}`
-      );
-      const { data: cast } = await axios.get(
-        `https://api.themoviedb.org/3/movie/${onClickMovieID}/credits?api_key=${process.env.REACT_APP_API_KEY}`
-      );
-
-      const { data: similar } = await axios.get(
-        `https://api.themoviedb.org/3/movie/${onClickMovieID}/similar?api_key=${process.env.REACT_APP_API_KEY}`
-      );
-      setMovieInfo(movieData);
-      console.log('movie selected', movieData);
-      setMovieVideo(video.results);
-      console.log('this is video', video.results);
-      setMovieCast(cast.cast);
-      console.log('this is cast', cast);
-
-      setSimilarMovies(similar.results);
-      console.log('this is similar movies', similar);
-      setIsLoading(!isLoading);
+      try {
+        const { data: movieData } = await axios.get(
+          `https://api.themoviedb.org/3/movie/${onClickMovieID}?api_key=${process.env.REACT_APP_API_KEY}`
+        );
+        const { data: video } = await axios.get(
+          `https://api.themoviedb.org/3/movie/${onClickMovieID}/videos?api_key=${process.env.REACT_APP_API_KEY}`
+        );
+        const { data: cast } = await axios.get(
+          `https://api.themoviedb.org/3/movie/${onClickMovieID}/credits?api_key=${process.env.REACT_APP_API_KEY}`
+        );
+        const { data: similar } = await axios.get(
+          `https://api.themoviedb.org/3/movie/${onClickMovieID}/similar?api_key=${process.env.REACT_APP_API_KEY}`
+        );
+        setMovieInfo(movieData);
+        console.log('movie selected', movieData);
+        setMovieVideo(video.results);
+        console.log('this is video', video.results);
+        setMovieCast(cast.cast);
+        console.log('this is cast', cast);
+        setSimilarMovies(similar.results);
+        console.log('this is similar movies', similar);
+        setIsLoading(false);
+      } catch (e) {
+        setStatusCode(true);
+        console.log(e);
+      }
     }
     dataFetch();
-  }, [onClickMovieID]);
+  }, [onClickMovieID, isLoading]);
 
+  // GETTING REVIEWS OF SELECTED MOVIE. IF MANY PAGES, ONLY THIS USE EFFECT WILL RE-RENDER.
   useEffect(() => {
     async function reviewsFetch() {
       const { data: reviews } = await axios.get(
@@ -65,36 +77,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
     reviewsFetch();
   }, [reviewsPage, onClickMovieID]);
 
-  const starRating = () => {
-    const stars = [];
-    const rating = Math.floor(movieInfo.vote_average);
-
-    for (let i = 1; i <= 10; i++) {
-      if (i <= rating) {
-        stars.push(<FontAwesomeIcon icon={solidStar} key={i} alt='star' />);
-      } else {
-        stars.push(<FontAwesomeIcon icon={regularStar} key={i} alt='star' />);
-      }
-    }
-
-    return stars;
-  };
-
-  const reviewsRating = (rate) => {
-    const stars = [];
-    const rating = Math.floor(rate);
-
-    for (let i = 1; i <= 10; i++) {
-      if (i <= rating) {
-        stars.push(<FontAwesomeIcon icon={solidStar} key={i} alt='star' />);
-      } else {
-        stars.push(<FontAwesomeIcon icon={regularStar} key={i} alt='star' />);
-      }
-    }
-
-    return stars;
-  };
-
+  // CHECK IF USER USE OTHER LINKS PROFILE, NULL PROFILE AND HAS PROFILE
   const userImgChecker = (img) => {
     if (img.includes('https')) {
       return (
@@ -148,7 +131,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
               <div className='col-span-7 col-start-4'>
                 <div className='flex gap-1 text-2xl font-semibold flex-wrap'>
                   <h1>
-                    {movieInfo.title || movieInfo.original_title}{' '}
+                    {movieInfo.title || movieInfo.original_title}
                     <span className='ml-1'>
                       ({movieInfo.release_date.split('-')[0]})
                     </span>
@@ -169,7 +152,9 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                 </div>
                 <div>
                   <p className='text-lg'>Rating: {movieInfo.vote_average}</p>
-                  <div className='flex gap-1'>{starRating()}</div>
+                  <div className='flex gap-1'>
+                    {CountingStar(movieInfo.vote_average)}
+                  </div>
                 </div>
                 <div className='py-3'>
                   <p className='font-semibold'>Overview</p>
@@ -205,7 +190,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                     <div
                       key={eachCast.id}
                       className={`overflow-hidden ${
-                        movieCast.length > 3 ? 'minw-12' : 'w-48'
+                        movieCast.length > 4 ? 'minw-12' : 'w-48'
                       } `}
                     >
                       {eachCast.profile_path ? (
@@ -267,7 +252,7 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
                         <p>
                           Rating:
                           <span className='ml-1'>
-                            {reviewsRating(review.author_details.rating)}
+                            {CountingStar(review.author_details.rating)}
                           </span>
                         </p>
                         <p className='italic'>Posted on: {review.created_at}</p>
@@ -327,6 +312,13 @@ const MovieDetails = ({ onClickMovieID, setIsLoading, isLoading }) => {
         </div>
       ) : (
         <Spin className='container mx-auto bg-force-remove' size='large' />
+      )}
+
+      {statusCode && (
+        <h1 className='text-center text-red-500'>
+          Status: 404 Not Found. Sorry, the data your trying to fetch cannot be
+          found.
+        </h1>
       )}
     </>
   );
