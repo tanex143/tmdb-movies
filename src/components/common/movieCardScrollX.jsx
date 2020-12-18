@@ -4,7 +4,7 @@ const MovieCardScrollX = ({ movie }) => {
   return (
     <div
       key={movie.id}
-      className='w-60 bg-white overflow-hidden rounded shadow-lg transform hover:-translate-y-3 hover:shadow-2xl hover:text-black cursor-pointer transition-all duration-500 ease-out'
+      className='md:w-60 w-48 bg-white overflow-hidden rounded shadow-lg transform hover:-translate-y-3 hover:shadow-2xl hover:text-black cursor-pointer transition-all duration-500 ease-out'
     >
       {movie.poster_path || movie.backdrop_path !== null ? (
         <img

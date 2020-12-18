@@ -5,12 +5,12 @@ const NextButton = ({ currentPage, setCurrentPage }) => {
   return (
     <button
       onClick={() => setCurrentPage(currentPage + 1)}
-      className='text-lg border rounded py-1 px-4 focus:outline-none hover:bg-gray-400'
+      className='sm:text-lg border rounded py-1 sm:px-4 px-3 focus:outline-none hover:bg-gray-400'
     >
       Next
       <FontAwesomeIcon
         icon={faArrowRight}
-        className='pl-2 text-2xl align-middle'
+        className='pl-2 sm:text-2xl text-xl align-middle'
       />
     </button>
   );

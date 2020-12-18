@@ -75,14 +75,18 @@ const MovieDetails = ({
   const userImgChecker = (img) => {
     if (img.includes('https')) {
       return (
-        <img src={Incognito} alt='img' className='w-4/5 rounded-full mx-auto' />
+        <img
+          src={Incognito}
+          alt='img'
+          className='md:w-4/5 w-full rounded-full mx-auto'
+        />
       );
     } else {
       return (
         <img
           src={`https://image.tmdb.org/t/p/w500${img}`}
           alt='img'
-          className='w-4/5 rounded-full mx-auto'
+          className='md:w-4/5 w-full rounded-full mx-auto'
         />
       );
     }
@@ -112,8 +116,8 @@ const MovieDetails = ({
                 />
               </div>
             )}
-            <div className='grid grid-cols-10 py-5 gap-4'>
-              <div className='col-span-3 col-start-1'>
+            <div className='grid md:grid-cols-10 sm:grid-cols-7 grid-cols-1 py-5 gap-4'>
+              <div className='md:col-span-3 col-start-1 sm:col-span-3'>
                 {movieInfo.poster_path !== null ? (
                   <img
                     src={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`}
@@ -128,7 +132,7 @@ const MovieDetails = ({
                   />
                 )}
               </div>
-              <div className='col-span-7 col-start-4'>
+              <div className='md:col-span-7 md:col-start-4 sm:col-span-4 sm:col-start-4'>
                 <div className='flex gap-1 text-2xl font-semibold flex-wrap'>
                   <h1>
                     {movieInfo.title || movieInfo.original_title}
@@ -139,7 +143,7 @@ const MovieDetails = ({
                 </div>
                 <div className='flex gap-1 text-lg py-1'>
                   <h1>Genre:</h1>
-                  <div className='flex gap-3 text-base align-middle'>
+                  <div className='flex flex-wrap gap-3 text-base align-middle'>
                     {movieInfo.genres.map((genre) => (
                       <p
                         key={genre.id}
@@ -152,7 +156,7 @@ const MovieDetails = ({
                 </div>
                 <div>
                   <p className='text-lg'>Rating: {movieInfo.vote_average}</p>
-                  <div className='flex gap-1'>
+                  <div className='flex flex-wrap sm:gap-1 gap-4'>
                     {CountingStar(movieInfo.vote_average)}
                   </div>
                 </div>
@@ -230,9 +234,9 @@ const MovieDetails = ({
                   movieReviews.map((review) => (
                     <div
                       key={review.id}
-                      className='grid grid-cols-8 py-5 gap-5'
+                      className='grid grid-cols-8 py-5 sm:gap-5 gap-1'
                     >
-                      <div className='col-start-1'>
+                      <div className='col-start-1 sm:col-span-1 col-span-2'>
                         <span>
                           {review.author_details.avatar_path !== null ? (
                             userImgChecker(review.author_details.avatar_path)
@@ -245,7 +249,7 @@ const MovieDetails = ({
                           )}
                         </span>
                       </div>
-                      <div className='col-start-2 col-span-7'>
+                      <div className='sm:col-start-2 sm:col-span-7 col-start-3 col-span-6'>
                         <h1 className='font-semibold text-lg'>
                           {review.author}
                         </h1>

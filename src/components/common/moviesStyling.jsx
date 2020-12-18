@@ -14,8 +14,10 @@ const MoviesStyling = ({
     <>
       <div className='pb-14'>
         <div className='container mx-auto'>
-          <h1 className='text-3xl italic font-semibold pb-8'>{name}</h1>
-          <div className='grid grid-cols-4 xl:grid-cols-5 gap-5'>
+          <h1 className='md:text-3xl text-xl italic font-semibold pb-8'>
+            {name}
+          </h1>
+          <div className='flex flex-wrap justify-center md:grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xl:grid-cols-5 gap-5'>
             {movieData.map((movie) => (
               <div key={movie.id} onClick={() => showModalHandler(movie.id)}>
                 <MovieCard movie={movie} />
@@ -31,7 +33,7 @@ const MoviesStyling = ({
                 />
               )}
 
-              <p className='text-lg h-full my-auto'>
+              <p className='sm:text-lg h-full my-auto'>
                 Page {currentPage} of {totalPages}
               </p>
 

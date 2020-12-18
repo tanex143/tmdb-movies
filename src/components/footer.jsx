@@ -4,8 +4,8 @@ const Footer = () => {
   return (
     <div className='py-10 bg-gray-300'>
       <div className='container mx-auto'>
-        <div className='grid grid-cols-6 gap-5'>
-          <div className='col-start-2'>
+        <div className='grid md:grid-cols-6 sm:grid-cols-4 grid-cols-2 gap-5'>
+          <div className='md:col-start-2'>
             <img src={TMDBLogo} alt='' className='w-4/5 mx-auto h-full' />
           </div>
           <div>
@@ -15,7 +15,7 @@ const Footer = () => {
             <p>Support Forums</p>
             <p>System Status</p>
           </div>
-          <div>
+          <div className='w-4/5 mx-auto'>
             <h1 className='font-semibold'>Legal</h1>
             <p>Term of Use</p>
             <p>Privacy Policy</p>

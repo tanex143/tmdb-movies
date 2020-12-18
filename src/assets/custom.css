@@ -67,3 +67,24 @@
   border: 1px;
   border-radius: 30px;
 }
+
+@media (max-width: 767px) {
+  .sm-margin-top {
+    margin-top: 28%;
+  }
+}
+
+@media (max-width: 310px) {
+  .xs-search-icon {
+    margin-left: 0.7rem !important;
+  }
+}
+
+@media (max-width: 396px) {
+  .xs-search-icon {
+    margin-left: 1.5rem;
+  }
+  .xs-padding-top {
+    padding-top: 7rem !important;
+  }
+}

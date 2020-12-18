@@ -10,7 +10,6 @@ import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
 import MovieCardScrollX from './common/movieCardScrollX';
 import MoviesStyling from './common/moviesStyling';
-import Footer from './footer';
 
 const Main = () => {
   // HEADER AND SEARCH STATES
@@ -140,7 +139,7 @@ const Main = () => {
   return (
     <>
       <div className='top-0'>
-        <div className='container mx-auto relative overflow-hidden'>
+        <div className='container mx-auto relative'>
           {!headerLoading ? (
             <Carousel
               dotPosition='left'
@@ -164,34 +163,34 @@ const Main = () => {
             <Spin className='w-full mx-auto py-10' size='large' />
           )}
 
-          <div className='absolute top-0 left-0 w-full mt-64'>
-            <div className='py-10 max-w-3xl mx-auto rounded glass'>
+          <div className='absolute top-0 left-0 w-full lg:mt-64 md:mt-56 sm-margin-top'>
+            <div className='sm:py-10 py-5 lg:max-w-3xl md:max-w-xl sm:max-w-lg max-w-sm mx-auto rounded glass'>
               <div className='flex flex-col items-center'>
-                <h1 className='text-3xl font-semibold'>
+                <h1 className='lg:text-3xl md:text-2xl text-lg font-semibold text-center'>
                   Welcome to The Movie Database
                 </h1>
-                <p className='pb-3 italic'>
+                <p className='pb-3 italic md:text-base text-sm text-center'>
                   Watch movies to relax and grab your popcorn and beer
                 </p>
               </div>
 
               <form
-                className='relative max-w-lg mx-auto'
+                className='relative md:max-w-lg sm:max-w-md mx-auto flex items-center justify-center'
                 onSubmit={SearchMoviesHandler}
               >
                 <FontAwesomeIcon
                   icon={faSearch}
-                  className='absolute top-0 left-0 text-xl opacity-80 h-full my-auto ml-1'
+                  className='absolute top-0 left-0 lg:text-xl md:text-lg opacity-80 h-full my-auto lg:ml-3 md:ml-5 sm:ml-4 ml-9 xs-search-icon'
                 />
                 <input
                   type='text'
                   placeholder='Search movies. . .'
-                  className='w-4/5 py-1 text-lg focus:outline-none focus:shadow-lg rounded-tl rounded-bl indent'
+                  className='sm:w-4/5 w-8/12 py-1 lg:text-lg focus:outline-none focus:shadow-lg rounded-tl rounded-bl indent'
                   onChange={searchTextHandler}
                 />
                 <button
                   type='submit'
-                  className='py-1 px-3 text-lg bg-gray-400 rounded-tr rounded-br focus:outline-none focus:bg-gray-600 hover:text-white'
+                  className='py-1 px-3 lg:text-lg bg-gray-400 rounded-tr rounded-br focus:outline-none focus:bg-gray-600 hover:text-white'
                 >
                   Search
                 </button>
@@ -201,8 +200,9 @@ const Main = () => {
         </div>
       </div>
 
+      {/* /////////////////SEARCH RESULTS ELEMENTS/////////////// */}
       {dataFetched && (
-        <div className='pt-14'>
+        <div className='sm:pt-14 pt-14 xs-padding-top'>
           <div className='container mx-auto'>
             <h1 className='text-lg font-semibold pb-5'>
               Total Results:
@@ -211,7 +211,7 @@ const Main = () => {
             {searchedMovies.length < 1 ? (
               <h1 className='italic'>No Results Found.</h1>
             ) : (
-              <div className='grid grid-cols-4 xl:grid-cols-5 gap-5'>
+              <div className='flex flex-wrap justify-center sm:grid sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5'>
                 {searchedMovies.map((movie) => (
                   <div
                     key={movie.id}
@@ -234,7 +234,7 @@ const Main = () => {
               {searchedTotalPage < 1 ? (
                 ''
               ) : (
-                <p className='text-lg h-full my-auto'>
+                <p className='sm:text-lg h-full my-auto'>
                   Page {searchedCurrentPage} of {searchedTotalPage}
                 </p>
               )}
@@ -252,9 +252,9 @@ const Main = () => {
       )}
 
       {/* //////////////NOW PLAYING ELEMENTS///////////////////////////// */}
-      <div className='py-14'>
+      <div className={`sm:py-14 ${dataFetched ? 'py-14' : 'pb-14 pt-28'} `}>
         <div className='container mx-auto'>
-          <h1 className='text-3xl italic font-semibold pb-8'>
+          <h1 className='md:text-3xl sm:text-xl text-lg italic font-semibold pb-8'>
             Now Playing in Cinema's
           </h1>
           <div className='p-5 rounded bg-white flex overflow-x-auto gap-5'>
@@ -275,7 +275,7 @@ const Main = () => {
                 />
               )}
 
-              <p className='text-lg h-full my-auto'>
+              <p className='sm:text-lg h-full my-auto'>
                 Page {nowPlayingCurrentPage} of {nowPlayingTotalPage}
               </p>
 
@@ -310,8 +310,8 @@ const Main = () => {
         name='Upcoming Movies'
       />
 
-      {/* /////////////////////FOOTER//////////////////////////// */}
-      <Footer />
+      {/* /////////////////////BACK TO TOP//////////////////////////// */}
+
       <BackTop>
         <button className='bg-gray-400 p-2 rounded cursor-pointer focus:outline-none hover:text-white hover:bg-black transition-all duration-500 ease-out'>
           <FontAwesomeIcon icon={faArrowUp} />
