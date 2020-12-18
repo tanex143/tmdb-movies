@@ -1,9 +1,20 @@
 import TMDBLogo from '../images/logo.svg';
+import { motion } from 'framer-motion';
+import { useScroll } from './animation/useScroll';
+import { zoomOut } from './animation/animate';
 
 const Footer = () => {
+  const [element, animControls] = useScroll();
+
   return (
     <div className='py-10 bg-gray-300'>
-      <div className='container mx-auto'>
+      <motion.div
+        ref={element}
+        variants={zoomOut}
+        initial='hidden'
+        animate={animControls}
+        className='container mx-auto'
+      >
         <div className='grid md:grid-cols-6 sm:grid-cols-4 grid-cols-2 gap-5'>
           <div className='md:col-start-2'>
             <img src={TMDBLogo} alt='' className='w-4/5 mx-auto h-full' />
@@ -30,7 +41,7 @@ const Footer = () => {
         <h1 className='text-center pt-5 font-semibold'>
           &copy; Alright Reserved TMDb December 2020.
         </h1>
-      </div>
+      </motion.div>
     </div>
   );
 };

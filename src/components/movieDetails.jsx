@@ -116,8 +116,8 @@ const MovieDetails = ({
                 />
               </div>
             )}
-            <div className='grid md:grid-cols-10 sm:grid-cols-7 grid-cols-1 py-5 gap-4'>
-              <div className='md:col-span-3 col-start-1 sm:col-span-3'>
+            <div className='grid xl:grid-cols-12 md:grid-cols-10 sm:grid-cols-7 grid-cols-1 py-5 gap-4'>
+              <div className='2xl:col-span-2 xl:col-span-3 md:col-span-3 col-start-1 sm:col-span-3'>
                 {movieInfo.poster_path !== null ? (
                   <img
                     src={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`}
@@ -132,7 +132,7 @@ const MovieDetails = ({
                   />
                 )}
               </div>
-              <div className='md:col-span-7 md:col-start-4 sm:col-span-4 sm:col-start-4'>
+              <div className='2xl:col-span-10 2xl:col-start-3 xl:col-span-9 xl:col-start-4 md:col-span-7 md:col-start-4 sm:col-span-4 sm:col-start-4'>
                 <div className='flex gap-1 text-2xl font-semibold flex-wrap'>
                   <h1>
                     {movieInfo.title || movieInfo.original_title}

@@ -10,8 +10,14 @@ import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
 import MovieCardScrollX from './common/movieCardScrollX';
 import MoviesStyling from './common/moviesStyling';
+import { useScroll } from './animation/useScroll';
+import { motion } from 'framer-motion';
+import { delayZoomOut, fade } from './animation/animate';
 
 const Main = () => {
+  // ANIMATIONS
+  const [element, animControls] = useScroll();
+
   // HEADER AND SEARCH STATES
   const [headerData, setHeaderData] = useState([]);
   const [headerLoading, setHeaderLoading] = useState(true);
@@ -141,29 +147,42 @@ const Main = () => {
       <div className='top-0'>
         <div className='container mx-auto relative'>
           {!headerLoading ? (
-            <Carousel
-              dotPosition='left'
-              autoplay
-              easing='linear'
-              className='w-full opacity-75'
+            <motion.div
+              ref={element}
+              variants={fade}
+              initial='hidden'
+              animate={animControls}
             >
-              {headerData.map((movie) => (
-                <div key={movie.id}>
-                  <div className='h-50vh text-center'>
-                    <img
-                      src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                      alt='img'
-                      className='w-full h-full'
-                    />
+              <Carousel
+                dotPosition='left'
+                autoplay
+                easing='linear'
+                className='w-full opacity-75'
+              >
+                {headerData.map((movie) => (
+                  <div key={movie.id}>
+                    <div className='h-50vh'>
+                      <img
+                        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                        alt='img'
+                        className='w-full h-full'
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </Carousel>
+                ))}
+              </Carousel>
+            </motion.div>
           ) : (
             <Spin className='w-full mx-auto py-10' size='large' />
           )}
 
-          <div className='absolute top-0 left-0 w-full lg:mt-64 md:mt-56 sm-margin-top'>
+          <motion.div
+            ref={element}
+            variants={delayZoomOut}
+            initial='hidden'
+            animate={animControls}
+            className='absolute top-0 left-0 w-full lg:mt-72 md:mt-56 sm-margin-top'
+          >
             <div className='sm:py-10 py-5 lg:max-w-3xl md:max-w-xl sm:max-w-lg max-w-sm mx-auto rounded glass'>
               <div className='flex flex-col items-center'>
                 <h1 className='lg:text-3xl md:text-2xl text-lg font-semibold text-center'>
@@ -196,7 +215,7 @@ const Main = () => {
                 </button>
               </form>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
