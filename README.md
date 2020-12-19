@@ -1,6 +1,6 @@
 # tmdb-movies
 
-# This project is made by ReactJS, Tailwindcss and Ant Design.
+# This project is made by ReactJS, Tailwindcss, Ant Design and Framer Motion for animation.
 
 - I created this project to practice my skills in reactjs and to familiarize with tailwindcss and antd. Also, to practice using Git.
 
