@@ -13,7 +13,8 @@ const MovieCard = ({ movie }) => {
         variants={zoomIn}
         initial='hidden'
         animate={animControls}
-        className='md:w-60 sm:w-48 w-60 bg-white rounded overflow-hidden shadow-lg transform hover:-translate-y-3 hover:shadow-2xl hover:text-black cursor-pointer transition-all duration-500 ease-out'
+        whileHover={{ translateY: -8 }}
+        className='md:w-60 sm:w-48 w-60 bg-white rounded overflow-hidden shadow-lg hover:shadow-2xl hover:text-black cursor-pointer transition-all duration-300 ease-out'
       >
         {movie.poster_path || movie.backdrop_path !== null ? (
           <img
