@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Spin } from 'antd';
 import ReactPlayer from 'react-player';
 import ShowMoreText from 'react-show-more-text';
 import PrevButton from './common/prevButton';
 import NextButton from './common/nextButton';
 import MovieCardScrollX from './common/movieCardScrollX';
-import { Spin } from 'antd';
 import UnknownPerson from '../images/unknown-person.png';
 import Incognito from '../images/incognito.jpg';
 import noImage from '../images/no-image.jpg';
